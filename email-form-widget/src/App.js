@@ -74,7 +74,7 @@ const isValidEmail = (email) => {
 };
 
 const identifyInHubspot = (email) => {
-  if (window?.analytics) {
+  if (window?.analytics && email) {
     // Need both identify + page for Hubspot
     window.analytics.identify({
       email,
