@@ -98,7 +98,7 @@ const App = ({ location }) => {
     // Clear error
     setError("");
     window.open(
-      `https://app.capchase.com${email ? `?email=${email}` : ""}`,
+      `https://app.capchase.com/register${email ? `?email=${email}` : ""}`,
       "_blank"
     );
     if (window.analytics) {
