@@ -115,7 +115,7 @@ const App = ({ location }) => {
 
     // Clear error if email is valid
     setError("");
-    if (!window.analytics) return;
+    if (!window.analytics || !email) return;
 
     identifyInHubspot(email);
     window.analytics.track("Email Field Edited", {
@@ -135,7 +135,7 @@ const App = ({ location }) => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <button onClick={submitEmail} className="submit-email-widget-button">
-        Sign Up
+        Go!
       </button>
       {error && (
         <p class="submit-email-widget-error-msg">
