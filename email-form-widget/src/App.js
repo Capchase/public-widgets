@@ -86,7 +86,7 @@ const identifyInHubspot = (email) => {
   }
 };
 
-const App = ({ location }) => {
+const App = ({ location, buttonText }) => {
   const [email, setEmail] = React.useState("");
   const [error, setError] = React.useState("");
 
@@ -103,8 +103,9 @@ const App = ({ location }) => {
     );
     if (window.analytics) {
       identifyInHubspot(email);
-      window.analytics.track("Sign-up Button Clicked", {
+      window.analytics.track("Button Clicked", {
         location,
+        text: buttonText,
       });
     }
   };
@@ -135,7 +136,7 @@ const App = ({ location }) => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <button onClick={submitEmail} className="submit-email-widget-button">
-        Go!
+        { buttonText }
       </button>
       {error && (
         <p class="submit-email-widget-error-msg">

@@ -10,7 +10,7 @@ const widgetDivs = document.querySelectorAll(".email-form-widget");
 widgetDivs.forEach((div) => {
   ReactDOM.render(
     <React.StrictMode>
-      <App location={div.dataset.location} />
+      <App {...div.dataset} />
     </React.StrictMode>,
     div
   );
