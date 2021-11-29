@@ -6,12 +6,12 @@
   font-family: "Es build", sans-serif;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
-  padding: 0 30px;
+  padding: 0 30px 0 20px;
   justify-content: center;
   align-items: center;
   background-color: #0f0f14;
   background-image: url("https://assets-global.website-files.com/6146543ab50f167ae088b201/614bf40d5a8c0e3faef124af_logo-rect-02.svg");
-  background-position: 90% 50%;
+  background-position: right 10px center;
   background-size: auto;
   background-repeat: no-repeat;
   transition: opacity 200ms ease, all 300ms ease;
@@ -20,7 +20,6 @@
   /* btn */
 
   position: absolute;
-  width: 148px;
   height: 56px;
   top: 0;
   right: 0;
@@ -32,7 +31,7 @@
 }
 
 .submit-email-widget-button:hover {
-  background-position: 94% 50%;
+  background-position: right 5px center;
 }
 
 .submit-email-widget-input {
