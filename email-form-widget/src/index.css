@@ -20,6 +20,7 @@
   /* btn */
 
   position: absolute;
+  min-width: 148px;
   height: 56px;
   top: 0;
   right: 0;
