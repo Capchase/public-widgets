@@ -115,10 +115,11 @@
   }
 }
 
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 450px) {
   .submit-email-widget-input {
     height: 42px;
     font-size: 15px;
+    padding: 12.5px 26px;
   }
   .submit-email-widget-button {
     font-size: 15px;
