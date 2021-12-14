@@ -86,7 +86,13 @@
   border-color: #f87171;
 }
 
-
+@media screen and (max-width: 991px) {
+  .submit-email-widget-button {
+    min-width: 118px;
+    width: 118px;
+    padding: 0 25px;
+  }
+}
 
 @media screen and (max-width: 900px) {
   .submit-email-widget-button {
