@@ -90,10 +90,9 @@
 
 @media screen and (max-width: 900px) {
   .submit-email-widget-button {
-    background-image: none;
-    min-width: 88px;
-    width: 88px;
-    padding: 0 5px;
+    min-width: 98px;
+    width: 98px;
+    padding: 0 15px;
   }
 }
 
@@ -103,13 +102,12 @@
   }
   .submit-email-widget-button {
     font-size: 18px;
-    background-image: url("https://assets-global.website-files.com/6146543ab50f167ae088b201/614bf40d5a8c0e3faef124af_logo-rect-02.svg");
     min-width: 118px;
     padding: 0 25px;
   }
 }
 
-@media screen and (max-width: 580px) {
+@media screen and (max-width: 420px) {
   .submit-email-widget-input {
     height: 42px;
     font-size: 15px;
@@ -117,9 +115,9 @@
   .submit-email-widget-button {
     font-size: 15px;
     background-image: none;
-    min-width: 88px;
-    width: 88px;
-    padding: 0 15px;
+    min-width: 78px;
+    width: 78px;
+    padding: 0 10px;
     height: 42px;
     border-radius: 21px;
   }
