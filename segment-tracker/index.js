@@ -15,6 +15,6 @@ $(document).ready(function () {
       }
     });
     // Fire Segment event
-    if ("analytics" in document) analytics.track(event, properties);
+    if ("analytics" in window) analytics.track(event, properties);
   });
 });
