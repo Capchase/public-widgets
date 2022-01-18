@@ -15,6 +15,8 @@ $(document).ready(function () {
         properties[property] = attribute.value;
       }
     });
+    // capture the URL where this event is fired
+    properties["url"] = document.URL;
     if (analytics in document) analytics.track(event, properties);
   });
 });
