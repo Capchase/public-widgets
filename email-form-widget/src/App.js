@@ -86,27 +86,44 @@ const identifyInHubspot = (email) => {
   }
 };
 
-const App = ({ location, buttonText }) => {
+const App = ({
+  buttonText,
+  redirectUrl,
+  analyticsLocation,
+  analyticsIntent,
+}) => {
   const [email, setEmail] = React.useState("");
   const [error, setError] = React.useState("");
 
-  const submitEmail = () => {
+  const trackLeadCreated = () => {
+    if (window.analytics) {
+      window.analytics.track("Lead Created", {
+        location: analyticsLocation,
+        url: document.URL,
+        email,
+        intent: analyticsIntent,
+      });
+    }
+  };
+
+  const submitEmail = (e) => {
     // Check email is correct before redirecting
     if (email && !isValidEmail(email))
       return setError("Introduce a valid work email");
 
     // Clear error
     setError("");
-    window.open(
-      `https://app.capchase.com/register${email ? `?email=${email}` : ""}`,
-      "_blank"
-    );
+    if (redirectUrl) window.open(`${redirectUrl}?email=${email}`, "_blank");
+
     if (window.analytics) {
       identifyInHubspot(email);
       window.analytics.track("Button Clicked", {
-        location,
-        text: buttonText,
+        location: analyticsLocation,
+        url: document.URL,
+        text: e.target.innerText,
+        intent: analyticsIntent,
       });
+      trackLeadCreated();
     }
   };
 
@@ -121,8 +138,11 @@ const App = ({ location, buttonText }) => {
     identifyInHubspot(email);
     window.analytics.track("Email Field Edited", {
       email,
-      location,
+      location: analyticsLocation,
+      url: document.URL,
+      intent: analyticsIntent,
     });
+    trackLeadCreated();
   };
 
   return (
@@ -136,7 +156,7 @@ const App = ({ location, buttonText }) => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <button onClick={submitEmail} className="submit-email-widget-button">
-        { buttonText }
+        {buttonText}
       </button>
       {error && (
         <p class="submit-email-widget-error-msg">
