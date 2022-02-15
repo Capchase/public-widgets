@@ -28,7 +28,7 @@ $(document).ready(function () {
 
     if (email){
       // Default anonymous_id just in case analytics has not loaded
-      let anonymous_id = $(this).attr("Email");
+      let anonymous_id = email;
 
       // If analytics has loaded, get Segment's anonymousId
       if ("analytics" in window) anonymous_id = analytics.user().anonymousId();
@@ -38,7 +38,12 @@ $(document).ready(function () {
         type: 'hidden',
         name: 'anonymousId',
         value: anonymous_id,
-        event: event,
+      }).appendTo(this);
+
+      $('<input>').attr({
+        type: 'hidden',
+        name: 'event',
+        value: event,
       }).appendTo(this);
     }
     // Continue with usual submit process
