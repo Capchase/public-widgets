@@ -1,32 +1,66 @@
+function get_extra_attributes(properties) {
+  $.each(this.attributes, function (_, attribute) {
+    if (attribute.name.startsWith("data-property-")) {
+      var property = attribute.name.split("data-property-")[1];
+      properties[property] = attribute.value;
+    }
+  });
+}
+
+function get_form_inputs(properties) {
+  $.each($(this).find('input'), function (_, input) {
+    // The submit button appears as an input... So we want to add
+    if (input.type !== "submit") {
+      properties[input.name.toLowerCase()] = $(this).val();
+    } else{
+      properties["button_text"] = $(this).val();
+    }
+  });
+}
+
 $(document).ready(function () {
   // capture a click on any element that has
   $("[data-analytics]").on("click", function () {
+    // Get event name
+    var event = $(this).attr("data-analytics");
+    
     var properties = {
       // capture the URL where this event is fired
       url: document.URL,
       text: $(this).context.innerText,
     };
-    var event = $(this).attr("data-analytics");
-    // for each attribute on the element we clicked...
-    $.each(this.attributes, function (_, attribute) {
-      if (attribute.name.startsWith("data-property-")) {
-        var property = attribute.name.split("data-property-")[1];
-        properties[property] = attribute.value;
-      }
-    });
+    // Get additional properties from the form
+    get_extra_attributes.call(this, properties);
+    
     // Fire Segment event
     if ("analytics" in window) analytics.track(event, properties);
   });
 
-  // we can just capture the submit action as it only exists in forms
-  $("[data-analytics]").on("submit", function (e) {
+
+  // Add submit listener for all forms
+  $("form").on("submit", function (e) {
     e.preventDefault();
-    // Get event name
-    const event = $(this).attr("data-analytics");
+
+    var properties = {
+      // capture the URL where this event is fired
+      url: document.URL,
+      // button_text: $(this).find("input[type='submit']").val(),
+    };
+
+    // Get additional properties from the form
+    get_extra_attributes.call(this, properties);
+    get_form_inputs.call(this, properties);
+
+    // Fire Segment event
+    if ("analytics" in window) analytics.track("Form Submitted", properties);
+
+    console.log(properties)
+
     // We need the form to have an email field just in case analytics has not loaded
-    let email = $(this).find("input[name='Email']").val() || $(this).find("input[name='email']").val();
+    let email = $('input[name ="email" i]').val();
 
     if (email){
+      
       // Default anonymous_id just in case analytics has not loaded
       let anonymous_id = email;
 
@@ -40,12 +74,9 @@ $(document).ready(function () {
         value: anonymous_id,
       }).appendTo(this);
 
-      $('<input>').attr({
-        type: 'hidden',
-        name: 'event',
-        value: event,
-      }).appendTo(this);
     }
+
+    console.log($('input'));
     // Continue with usual submit process
     $(this).unbind('submit').submit();
   });
