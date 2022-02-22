@@ -44,7 +44,6 @@ $(document).ready(function () {
     var properties = {
       // capture the URL where this event is fired
       url: document.URL,
-      // button_text: $(this).find("input[type='submit']").val(),
     };
 
     // Get additional properties from the form
@@ -53,8 +52,6 @@ $(document).ready(function () {
 
     // Fire Segment event
     if ("analytics" in window) analytics.track("Form Submitted", properties);
-
-    console.log(properties)
 
     // We need the form to have an email field just in case analytics has not loaded
     let email = $('input[name ="email" i]').val();
