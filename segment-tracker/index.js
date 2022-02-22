@@ -73,7 +73,6 @@ $(document).ready(function () {
 
     }
 
-    console.log($('input'));
     // Continue with usual submit process
     $(this).unbind('submit').submit();
   });
