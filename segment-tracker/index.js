@@ -38,7 +38,7 @@ $(document).ready(function () {
 
 
   // Add submit listener for all forms
-  $("form").on("submit", function (e) {
+  $("form").bind("submit", function (e) {
     e.preventDefault();
 
     var properties = {
