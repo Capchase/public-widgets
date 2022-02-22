@@ -38,8 +38,7 @@ $(document).ready(function () {
 
 
   // Add submit listener for all forms
-  $("form").on("submit", function (e) {
-    e.preventDefault();
+  $("form").bind("submit", function (e) {
 
     var properties = {
       // capture the URL where this event is fired
@@ -73,8 +72,6 @@ $(document).ready(function () {
 
     }
 
-    // Continue with usual submit process
-    e.currentTarget.submit();
   });
 
 });
