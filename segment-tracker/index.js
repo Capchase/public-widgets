@@ -23,11 +23,15 @@ $(document).ready(function () {
   $("[data-analytics]").on("click", function () {
     // Get event name
     var event = $(this).attr("data-analytics");
+
+    var button_text = ($(this)?.context?.innerText || $(this)[0]?.text || $(this)[0]?.value)
+
+    if (button_text) button_text = button_text.trim()
     
     var properties = {
       // capture the URL where this event is fired
       url: document.URL,
-      text: ($(this)?.context?.innerText || $(this)[0]?.text).trim(),
+      text: button_text,
     };
     // Get additional properties from the form
     get_extra_attributes.call(this, properties);
