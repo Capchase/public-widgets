@@ -27,7 +27,7 @@ $(document).ready(function () {
     var properties = {
       // capture the URL where this event is fired
       url: document.URL,
-      text: $(this).context.innerText,
+      text: $(this)?.context?.innerText || $(this)[0]?.text,
     };
     // Get additional properties from the form
     get_extra_attributes.call(this, properties);
