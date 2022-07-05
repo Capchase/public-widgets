@@ -10,8 +10,8 @@ function get_extra_attributes(properties) {
 function get_form_inputs(properties) {
   $.each($(this).find('input'), function (_, input) {
     // The submit button appears as an input... So we want to add
-    if (input.type !== "submit") {
-      properties[input.name.toLowerCase()] = $(this).val();
+    if (input.type.toLowerCase() !== "submit") {
+      properties[input.name.toLowerCase().split("-")[0]] = $(this).val();
     } else{
       properties["button_text"] = $(this).val();
     }
@@ -58,6 +58,13 @@ $(document).ready(function () {
 
     // We need the form to have an email field just in case analytics has not loaded
     let email = $('input[name ="email" i]').val();
+
+    if (!email){
+      $.each($(this).find('input'), function (_, input) {
+        // The submit button appears as an input... So we want to add
+        if((input.type).toLowerCase().includes("email")) email = $(this).val()
+      });
+    }
 
     if (email){
       
