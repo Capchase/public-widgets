@@ -18,7 +18,7 @@ function get_form_inputs(properties) {
   });
 }
 
-$(document).ready(function () {
+$(window).load(function () {
   // capture a click on any element that has
   $("[data-analytics]").on("click", function () {
     // Get event name
