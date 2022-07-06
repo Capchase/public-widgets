@@ -63,7 +63,7 @@ function get_form_inputs(properties) {
 }(jQuery));
 
 
-$(window).load(function () {
+$(document).ready(function () {
   // capture a click on any element that has
   $("[data-analytics]").onButFirst("click", async function () {
     // Get event name
