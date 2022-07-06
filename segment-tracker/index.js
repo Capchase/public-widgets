@@ -7,6 +7,7 @@ function get_extra_attributes(properties) {
   });
 }
 
+
 function get_form_inputs(properties) {
   $.each($(this).find('input'), function (_, input) {
     // The submit button appears as an input... So we want to add
@@ -18,9 +19,53 @@ function get_form_inputs(properties) {
   });
 }
 
+
+(function( $ ) {
+  $.fn.onButFirst = function(eventName,         /* the name of the event to bind to, e.g. 'click' */
+                             workToBeDoneFirst, /* callback that must complete before the event is re-fired */
+                             workDoneCallback   /* optional callback to execute before the event is left to bubble away */) {
+    var isDone = false;
+
+    this.on(eventName, function(e) {
+      if (isDone === true) {
+        isDone = false;
+        workDoneCallback && workDoneCallback.apply(this, arguments);
+        return;
+      }
+
+      e.preventDefault();
+
+      // capture target to re-fire event at
+      var $target = $(this);
+
+      // set up callback for when workToBeDoneFirst has completed
+      var successfullyCompleted = function() {
+        isDone = true;
+        $target.trigger(e.type);
+      };
+
+      // execute workToBeDoneFirst callback
+      var workResult = workToBeDoneFirst.apply(this, arguments);
+
+      // check if workToBeDoneFirst returned a promise
+      if (workResult && $.isFunction(workResult.then))
+      {
+        workResult.then(successfullyCompleted);
+      }
+      else
+      {
+        successfullyCompleted();
+      }
+    });
+
+    return this;
+  };
+}(jQuery));
+
+
 $(window).load(function () {
   // capture a click on any element that has
-  $("[data-analytics]").on("click", async function () {
+  $("[data-analytics]").onButFirst("click", async function () {
     // Get event name
     var event = $(this).attr("data-analytics");
 
@@ -41,7 +86,7 @@ $(window).load(function () {
 
 
   // Add submit listener for all forms
-  $("form").bind("submit", function (e) {
+  $("form").onButFirst("submit", function () {
 
     var properties = {
       // capture the URL where this event is fired
