@@ -18,23 +18,10 @@ function get_form_inputs(properties) {
   });
 }
 
+
+// Create flags
 var button_event_triggered = false;
 var form_event_triggered = false;
-
-$('.button').on('click', function(e) {
-  if (lots_of_stuff_already_done) {
-    lots_of_stuff_already_done = false; // reset flag
-    return; // let the event bubble away
-  }
-
-  e.preventDefault();
-
-  // do lots of stuff
-
-  lots_of_stuff_already_done = true; // set flag
-  $(this).trigger('click');
-});
-
 
 $(document).ready(function () {
   // capture a click on any element that has
