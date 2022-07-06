@@ -18,9 +18,32 @@ function get_form_inputs(properties) {
   });
 }
 
+function get_redirect(e){
+  return e.currentTarget.getAttribute('href')
+}
+
+
 $(document).ready(function () {
+
+  // Create flags
+  var button_event_triggered = false;
+
   // capture a click on any element that has
-  $("[data-analytics]").on("click", async function () {
+  $("[data-analytics]").on("click", async function (e) {
+    if (button_event_triggered) {
+      button_event_triggered = false; // reset flag
+
+      const redirect_to = get_redirect(e);
+
+      if (redirect_to){
+        window.location.href = redirect_to;
+      }
+
+      return true; // let the event bubble away
+    }
+
+    e.preventDefault();
+
     // Get event name
     var event = $(this).attr("data-analytics");
 
@@ -37,11 +60,15 @@ $(document).ready(function () {
     get_extra_attributes.call(this, properties);
     // Fire Segment event
     if ("analytics" in window) await analytics.track(event, properties);
+
+    button_event_triggered = true; // set flag
+    $(this).trigger('click');
+
   });
 
 
   // Add submit listener for all forms
-  $("form").bind("submit", function (e) {
+  $("form").on("submit", function () {
 
     var properties = {
       // capture the URL where this event is fired
