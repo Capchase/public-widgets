@@ -18,17 +18,28 @@ function get_form_inputs(properties) {
   });
 }
 
+function get_redirect(e){
+  return e.currentTarget.getAttribute('href')
+}
 
-// Create flags
-var button_event_triggered = false;
-var form_event_triggered = false;
 
 $(document).ready(function () {
+
+  // Create flags
+  var button_event_triggered = false;
+
   // capture a click on any element that has
   $("[data-analytics]").on("click", async function (e) {
     if (button_event_triggered) {
       button_event_triggered = false; // reset flag
-      return; // let the event bubble away
+
+      const redirect_to = get_redirect(e);
+
+      if (redirect_to){
+        window.location.href = redirect_to;
+      }
+
+      return true; // let the event bubble away
     }
 
     e.preventDefault();
@@ -57,14 +68,7 @@ $(document).ready(function () {
 
 
   // Add submit listener for all forms
-  $("form").on("submit", function (e) {
-
-    if (form_event_triggered) {
-      form_event_triggered = false; // reset flag
-      return; // let the event bubble away
-    }
-
-    e.preventDefault();
+  $("form").on("submit", function () {
 
     var properties = {
       // capture the URL where this event is fired
@@ -104,9 +108,6 @@ $(document).ready(function () {
       }).appendTo(this);
 
     }
-
-    form_event_triggered = true; // set flag
-    $(this).trigger('submit');
 
   });
 
