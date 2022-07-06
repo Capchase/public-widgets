@@ -18,21 +18,9 @@ function get_form_inputs(properties) {
   });
 }
 
-
-// Create flags
-var button_event_triggered = false;
-var form_event_triggered = false;
-
 $(document).ready(function () {
   // capture a click on any element that has
-  $("[data-analytics]").on("click", async function (e) {
-    if (button_event_triggered) {
-      button_event_triggered = false; // reset flag
-      return; // let the event bubble away
-    }
-
-    e.preventDefault();
-
+  $("[data-analytics]").on("click", async function () {
     // Get event name
     var event = $(this).attr("data-analytics");
 
@@ -49,22 +37,11 @@ $(document).ready(function () {
     get_extra_attributes.call(this, properties);
     // Fire Segment event
     if ("analytics" in window) await analytics.track(event, properties);
-
-    button_event_triggered = true; // set flag
-    $(this).trigger('click');
-
   });
 
 
   // Add submit listener for all forms
-  $("form").on("submit", function (e) {
-
-    if (form_event_triggered) {
-      form_event_triggered = false; // reset flag
-      return; // let the event bubble away
-    }
-
-    e.preventDefault();
+  $("form").bind("submit", function (e) {
 
     var properties = {
       // capture the URL where this event is fired
@@ -104,9 +81,6 @@ $(document).ready(function () {
       }).appendTo(this);
 
     }
-
-    form_event_triggered = true; // set flag
-    $(this).trigger('submit');
 
   });
 
