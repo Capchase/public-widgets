@@ -10,11 +10,17 @@
       type="text/css"
     />
     <script src="https://rawcdn.githack.com/jsor/lity/06d481fbb9bdbd928e06d978ba5d9b1e480e2201/vendor/jquery.js"></script>
+    <script>
+      !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="fwbqyLd6JLDUgZAsMJwPbSL9VUPl5mJx";;analytics.SNIPPET_VERSION="4.15.3";
+        analytics.load("fwbqyLd6JLDUgZAsMJwPbSL9VUPl5mJx");
+        analytics.page();
+      }}();
+    </script>
   </head>
   <body>
-    <button data-analytics="Button Clicked" data-property-some_prop="hey hey">
+    <a data-analytics="Button Clicked" data-property-some_prop="hey hey" href="https://youtube.com">
       Click me!
-    </button>
+    </a>
     <form id="formID" data-property-prop-form="added-prop" target="_blank">
       <label for="Email">Email:</label><br>
       <input type="text" id="Email" name="Email">

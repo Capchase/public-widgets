@@ -20,7 +20,7 @@ function get_form_inputs(properties) {
 
 $(window).load(function () {
   // capture a click on any element that has
-  $("[data-analytics]").on("click", function () {
+  $("[data-analytics]").on("click", async function () {
     // Get event name
     var event = $(this).attr("data-analytics");
 
@@ -35,9 +35,8 @@ $(window).load(function () {
     };
     // Get additional properties from the form
     get_extra_attributes.call(this, properties);
-    
     // Fire Segment event
-    if ("analytics" in window) analytics.track(event, properties);
+    if ("analytics" in window) await analytics.track(event, properties);
   });
 
 
