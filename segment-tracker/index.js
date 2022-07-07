@@ -82,6 +82,7 @@ function flattenDict(dictToFlatten, prefix) {
   return flatDict;
 }
 
+
 $(document).ready(function () {
 
   // Create flags
