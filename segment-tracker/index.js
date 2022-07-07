@@ -24,15 +24,15 @@ function get_reveal_and_qualified_information(properties) {
     const reveal_info = window.reveal;
     if (!reveal_info || Object.keys(reveal_info).length === 0){
       // If there's no reveal info, return properties and Non-Qualified flag
-      return {...properties, "property": "Non-Qualified Traffic"};
+      return {"category": "Non-Qualified Traffic"};
     } else {
       // If we find reveal info, return properties and Qualified flag
       const flatten_reveal_info = flattenDict(reveal_info, "clearbit_reveal_");
-      return {...properties, ...flatten_reveal_info, "property": "Qualified Traffic"}
+      return {...flatten_reveal_info, "category": "Qualified Traffic"}
     }
   } else {
     // If reveal is not present, return properties and Non-Qualified flag
-    return {...properties, "property": "Non-Qualified Traffic"}
+    return {"category": "Non-Qualified Traffic"}
   }
 }
 
@@ -118,10 +118,14 @@ $(document).ready(function () {
     };
     // Get additional properties from the form
     get_extra_attributes.call(this, properties);
-    properties = get_reveal_and_qualified_information(properties);
+
+    const reveal_dimensions = get_reveal_and_qualified_information(properties);
 
     // Fire Segment event
-    if ("analytics" in window) await analytics.track(event, properties);
+    if ("analytics" in window) {
+      await analytics.identify(reveal_dimensions)
+      await analytics.track(event, {...properties, "category": "CTAs"});
+    }
 
     button_event_triggered = true; // set flag
     $(this).trigger('click');
@@ -142,8 +146,13 @@ $(document).ready(function () {
     get_form_inputs.call(this, properties);
     properties = get_reveal_and_qualified_information(properties);
 
+    const reveal_dimensions = get_reveal_and_qualified_information(properties);
+
     // Fire Segment event
-    if ("analytics" in window) analytics.track("Form Submitted", properties);
+    if ("analytics" in window) {
+      analytics.identify(reveal_dimensions)
+      analytics.track("Form Submitted", {...properties, "category": "CTAs"});
+    }
 
     // We need the form to have an email field just in case analytics has not loaded
     let email = $('input[name ="email" i]').val();
