@@ -7,6 +7,7 @@ function get_extra_attributes(properties) {
   });
 }
 
+
 function get_form_inputs(properties) {
   $.each($(this).find('input'), function (_, input) {
     // The submit button appears as an input... So we want to add
@@ -18,8 +19,67 @@ function get_form_inputs(properties) {
   });
 }
 
+function get_reveal_and_qualified_information(properties) {
+  if ("reveal" in window) {
+    const reveal_info = window.reveal;
+    if (Object.keys(reveal_info).length === 0){
+      // If there's no reveal info, return properties and Non-Qualified flag
+      return {...properties, "property": "Non-Qualified Traffic"};
+    } else {
+      // If we find reveal info, return properties and Qualified flag
+      const flatten_reveal_info = flattenDict(reveal_info, "clearbit_reveal_");
+      return {...properties, ...flatten_reveal_info, "property": "Qualified Traffic"}
+    }
+  } else {
+    // If reveal is not present, return properties and Non-Qualified flag
+    return {...properties, "property": "Non-Qualified Traffic"}
+  }
+}
+
+
 function get_redirect(e){
   return e.currentTarget.getAttribute('href')
+}
+
+
+const camelToSnakeCase = text => text.split(/(?=[A-Z])/).join('_').toLowerCase();
+
+
+function flattenDict(dictToFlatten, prefix) {
+  function flatten(dict, parent) {
+    var keys = [];
+    var values = [];
+
+    for(var key in dict) {
+      if(typeof dict[key] === 'object') {
+        var result = flatten(dict[key], parent ? parent + '_' + key : key);
+        keys = keys.concat(result.keys);
+        values = values.concat(result.values);
+      }
+      else {
+        keys.push(parent ? parent + '_' + key : key);
+        values.push(dict[key]);
+      }
+    }
+
+    return {
+      keys : keys,
+      values : values
+    }
+  }
+
+  var result = flatten(dictToFlatten);
+  var flatDict = {};
+
+  for(var i = 0, end = result.keys.length; i < end; i++) {
+
+    flatDict[`${prefix}${camelToSnakeCase(result.keys[i])}`] = result.values[i];
+
+
+    flatDict[result.keys[i]] = result.values[i];
+  }
+
+  return flatDict;
 }
 
 
@@ -58,6 +118,8 @@ $(document).ready(function () {
     };
     // Get additional properties from the form
     get_extra_attributes.call(this, properties);
+    properties = get_reveal_and_qualified_information(properties);
+
     // Fire Segment event
     if ("analytics" in window) await analytics.track(event, properties);
 
@@ -78,6 +140,7 @@ $(document).ready(function () {
     // Get additional properties from the form
     get_extra_attributes.call(this, properties);
     get_form_inputs.call(this, properties);
+    properties = get_reveal_and_qualified_information(properties);
 
     // Fire Segment event
     if ("analytics" in window) analytics.track("Form Submitted", properties);
