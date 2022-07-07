@@ -19,7 +19,7 @@ function get_form_inputs(properties) {
   });
 }
 
-function get_reveal_and_qualified_information(properties) {
+function get_reveal_and_qualified_information() {
   if ("reveal" in window) {
     const reveal_info = window.reveal;
     if (!reveal_info || Object.keys(reveal_info).length === 0){
@@ -86,6 +86,14 @@ $(document).ready(function () {
   // Create flags
   var button_event_triggered = false;
 
+  const reveal_dimensions = get_reveal_and_qualified_information();
+
+  // Fire Segment event
+  if ("analytics" in window) {
+    analytics.identify(reveal_dimensions)
+  }
+
+
   // capture a click on any element that has
   $("[data-analytics]").on("click", async function (e) {
     if (button_event_triggered) {
@@ -117,11 +125,8 @@ $(document).ready(function () {
     // Get additional properties from the form
     get_extra_attributes.call(this, properties);
 
-    const reveal_dimensions = get_reveal_and_qualified_information(properties);
-
     // Fire Segment event
     if ("analytics" in window) {
-      await analytics.identify(reveal_dimensions)
       await analytics.track(event, {...properties, "category": "CTAs"});
     }
 
@@ -142,13 +147,9 @@ $(document).ready(function () {
     // Get additional properties from the form
     get_extra_attributes.call(this, properties);
     get_form_inputs.call(this, properties);
-    properties = get_reveal_and_qualified_information(properties);
-
-    const reveal_dimensions = get_reveal_and_qualified_information(properties);
 
     // Fire Segment event
     if ("analytics" in window) {
-      analytics.identify(reveal_dimensions)
       analytics.track("Form Submitted", {...properties, "category": "CTAs"});
     }
 
