@@ -22,7 +22,7 @@ function get_form_inputs(properties) {
 function get_reveal_and_qualified_information(properties) {
   if ("reveal" in window) {
     const reveal_info = window.reveal;
-    if (Object.keys(reveal_info).length === 0){
+    if (!reveal_info || Object.keys(reveal_info).length === 0){
       // If there's no reveal info, return properties and Non-Qualified flag
       return {...properties, "property": "Non-Qualified Traffic"};
     } else {
