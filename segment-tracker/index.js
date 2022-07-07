@@ -22,9 +22,16 @@ function get_form_inputs(properties) {
 function get_reveal_and_qualified_information(properties) {
   if ("reveal" in window) {
     const reveal_info = window.reveal;
-    const flatten_reveal_info = flattenDict(reveal_info, "clearbit_reveal_");
-    return {...properties, ...flatten_reveal_info, "property": "Qualified Traffic"}
+    if (Object.keys(reveal_info).length === 0){
+      // If there's no reveal info, return properties and Non-Qualified flag
+      return {...properties, "property": "Non-Qualified Traffic"};
+    } else {
+      // If we find reveal info, return properties and Qualified flag
+      const flatten_reveal_info = flattenDict(reveal_info, "clearbit_reveal_");
+      return {...properties, ...flatten_reveal_info, "property": "Qualified Traffic"}
+    }
   } else {
+    // If reveal is not present, return properties and Non-Qualified flag
     return {...properties, "property": "Non-Qualified Traffic"}
   }
 }
