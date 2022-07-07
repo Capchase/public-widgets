@@ -75,8 +75,6 @@ function flattenDict(dictToFlatten, prefix) {
 
     flatDict[`${prefix}${camelToSnakeCase(result.keys[i])}`] = result.values[i];
 
-
-    flatDict[result.keys[i]] = result.values[i];
   }
 
   return flatDict;
