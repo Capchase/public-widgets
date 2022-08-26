@@ -51,7 +51,7 @@ function flattenDict(dictToFlatten, prefix) {
     var values = [];
 
     for(var key in dict) {
-      if(typeof dict[key] === 'object') {
+      if((typeof dict[key] === 'object') && !(Array.isArray(dict[key]))) {
         var result = flatten(dict[key], parent ? parent + '_' + key : key);
         keys = keys.concat(result.keys);
         values = values.concat(result.values);
