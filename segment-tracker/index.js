@@ -138,7 +138,7 @@ $(document).ready(function () {
 
 
   // Add submit listener for all forms
-  $("form").on("submit", function () {
+  $("form").bind('ajax:complete', function () {
 
     var properties = {
       // capture the URL where this event is fired
