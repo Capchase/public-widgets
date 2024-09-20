@@ -1,3 +1,5 @@
+const CURRENT_URL = document.URL;
+
 function get_extra_attributes(properties) {
   $.each(this.attributes, function (_, attribute) {
     if (attribute.name.startsWith("data-property-")) {
@@ -120,7 +122,7 @@ $(document).ready(function () {
     
     var properties = {
       // capture the URL where this event is fired
-      url: document.URL,
+      url: CURRENT_URL,
       text: button_text,
     };
     // Get additional properties from the form
@@ -137,12 +139,12 @@ $(document).ready(function () {
   });
 
 
-  // Add submit listener for all forms
+  // This only works for Webflow forms (Ajax based)
   $("form").on("submit", function () {
 
     var properties = {
       // capture the URL where this event is fired
-      url: document.URL,
+      url: CURRENT_URL,
     };
 
     // Get additional properties from the form
@@ -151,6 +153,7 @@ $(document).ready(function () {
 
     // Fire Segment event
     if ("analytics" in window) {
+      analytics.identify(properties)
       analytics.track("Form Submitted", {...properties, "category": "CTAs"});
     }
 
@@ -165,7 +168,7 @@ $(document).ready(function () {
     }
 
     if (email){
-      
+
       // Default anonymous_id just in case analytics has not loaded
       let anonymous_id = email;
 
@@ -180,7 +183,28 @@ $(document).ready(function () {
       }).appendTo(this);
 
     }
-
   });
 
+});
+
+
+// Hidden input URL handing
+
+// "All" forms
+window.onload = function() {
+  $("form").each(function() {
+    // Create a hidden input field with the URL
+    $('<input>').attr({
+      type: 'hidden',
+      name: 'url',
+      value: CURRENT_URL
+    }).appendTo(this);  // Append the hidden field to each form
+  });
+};
+
+// Hubspot forms -> Need to wait for the 'hsFormCallback'
+window.addEventListener('message', event => {
+  if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormReady') {
+    $('input[name="url"]').val(CURRENT_URL).trigger('change');
+  }
 });
