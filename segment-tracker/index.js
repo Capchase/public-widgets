@@ -22,20 +22,8 @@ function get_form_inputs(properties) {
 }
 
 function get_reveal_and_qualified_information() {
-  if ("reveal" in window) {
-    const reveal_info = window.reveal;
-    if (!reveal_info || !reveal_info?.domain){
-      // If there's no reveal info, return properties and Non-Qualified flag
-      return {"qualified_traffic": false, "category": "Non-Qualified Traffic"};
-    } else {
-      // If we find reveal info, return properties and Qualified flag
-      const flatten_reveal_info = flattenDict(reveal_info, "clearbit_reveal_");
-      return {...flatten_reveal_info, "qualified_traffic": true, "category": "Qualified Traffic"}
-    }
-  } else {
-    // If reveal is not present, return properties and Non-Qualified flag
-    return {"qualified_traffic": false, "category": "Non-Qualified Traffic"}
-  }
+  // Reveal won't be present anymore, so all traffic from now on will be non-qualified
+  return {"qualified_traffic": false, "category": "Non-Qualified Traffic"}
 }
 
 
